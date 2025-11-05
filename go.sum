@@ -4,7 +4,7 @@ github.com/iancoleman/strcase v0.3.0 h1:nTXanmYxhfFAMjZL34Ov6gkzEsSJZ5DbhxWjvSAS
 github.com/iancoleman/strcase v0.3.0/go.mod h1:iwCmte+B7n89clKwxIoIXy/HfoL7AsD47ZCWhYzw7ho=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
-github.com/tomefile/lib-parser v0.1.1-beta h1:gvWWiAQot9lpDZS+zaPUHiVDusEKVMQJOIoGAxrnxjI=
-github.com/tomefile/lib-parser v0.1.1-beta/go.mod h1:wiK10BlcJvgGDYvWc+66TnZkMI5OvlisPo+wHpXWyjU=
+github.com/tomefile/lib-parser v0.1.2-beta h1:ZYpfoEi4UzYKOsauAdvrEa3JQkUp0ZgMXXfWCU1SHJo=
+github.com/tomefile/lib-parser v0.1.2-beta/go.mod h1:wiK10BlcJvgGDYvWc+66TnZkMI5OvlisPo+wHpXWyjU=
 gotest.tools v2.2.0+incompatible h1:VsBPFP1AI068pPrMxtb/S8Zkgf9xEmTLJjfM+P5UIEo=
 gotest.tools v2.2.0+incompatible/go.mod h1:DsYFclhRJ6vuDpmuTbkuFWG+y2sxOXAzmJt81HFBacw=

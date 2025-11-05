@@ -3,7 +3,7 @@ module github.com/tomefile/lib-validator
 go 1.25.3
 
 require (
-	github.com/tomefile/lib-parser v0.1.1-beta
+	github.com/tomefile/lib-parser v0.1.2-beta
 	gotest.tools v2.2.0+incompatible
 )
 
