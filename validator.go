@@ -20,7 +20,6 @@ func Validate(node *libparser.Node) (*libparser.Node, error) {
 	case libparser.NODE_DIRECTIVE:
 		required_args, is_found := ValidDirectives[node.Literal]
 		if !is_found {
-			node.Col = 1
 			return node, UndefinedError{
 				Scope:   "directive",
 				Name:    node.Literal,
@@ -53,7 +52,6 @@ func Validate(node *libparser.Node) (*libparser.Node, error) {
 	case libparser.NODE_EXEC:
 		path, is_found := FindExec(node.Literal)
 		if !is_found {
-			node.Col = 0
 			return node, UndefinedError{
 				Scope:   "binary",
 				Name:    node.Literal,
@@ -64,7 +62,6 @@ func Validate(node *libparser.Node) (*libparser.Node, error) {
 
 	case libparser.NODE_MACRO:
 		if !slices.Contains(ValidMacros, node.Literal) {
-			node.Col = 0
 			return node, UndefinedError{
 				Scope:   "macro",
 				Name:    node.Literal,
@@ -73,7 +70,6 @@ func Validate(node *libparser.Node) (*libparser.Node, error) {
 		}
 
 	default:
-		node.Col = 0
 		return node, InternalError{
 			Format: "unexpected libparser.NodeType: %#v",
 			Args:   []any{node.Type},
