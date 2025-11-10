@@ -9,66 +9,63 @@ import (
 )
 
 func TestValidatorExec(test *testing.T) {
-	_, err := libvalidator.Validate(&libparser.Node{
-		Type:    libparser.NODE_EXEC,
-		Literal: "what_are_the_chances_this_binary_exists_and_the_test_doesnt_pass",
+	_, err := libvalidator.Validate(&libparser.ExecNode{
+		Binary: "what_are_the_chances_this_binary_exists_and_the_test_doesnt_pass",
 	})
-	assert.ErrorContains(test, err, `undefined binary`)
+	assert.ErrorContains(test, err, `$PATH`)
 }
 
 func TestValidatorDirective(test *testing.T) {
-	_, err := libvalidator.Validate(&libparser.Node{
-		Type:    libparser.NODE_DIRECTIVE,
-		Literal: libvalidator.DIR_EXPORT,
-		Args:    []any{"hello_world", "123"},
+	_, err := libvalidator.Validate(&libparser.DirectiveNode{
+		Name: libvalidator.DIR_EXPORT,
+		NodeArgs: []libparser.Node{
+			&libparser.StringNode{Contents: "hello_world"},
+			&libparser.StringNode{Contents: "123"},
+		},
 	})
-	assert.NilError(test, err)
+	assert.Assert(test, err == nil)
 
-	_, err = libvalidator.Validate(&libparser.Node{
-		Type:    libparser.NODE_DIRECTIVE,
-		Literal: libvalidator.DIR_EXPORT,
+	_, err = libvalidator.Validate(&libparser.DirectiveNode{
+		Name:     libvalidator.DIR_EXPORT,
+		NodeArgs: []libparser.Node{},
 	})
-	assert.ErrorContains(test, err, `mismatched arguments`)
+	assert.ErrorContains(test, err, `expected`)
 
-	_, err = libvalidator.Validate(&libparser.Node{
-		Type:    libparser.NODE_DIRECTIVE,
-		Literal: libvalidator.DIR_EXPORT + "DOES_NOT_EXIST",
+	_, err = libvalidator.Validate(&libparser.DirectiveNode{
+		Name:     libvalidator.DIR_EXPORT + "DOES_NOT_EXIST",
+		NodeArgs: []libparser.Node{},
 	})
-	assert.ErrorContains(test, err, `undefined directive`)
+	assert.ErrorContains(test, err, `define`)
 }
 
 func TestValidatorMacro(test *testing.T) {
 	macro := "example_macro"
-	libvalidator.ValidMacros = append(libvalidator.ValidMacros, macro)
+	libvalidator.ValidMacros[macro] = nil
 
-	_, err := libvalidator.Validate(&libparser.Node{
-		Type:    libparser.NODE_MACRO,
-		Literal: macro,
+	_, err := libvalidator.Validate(&libparser.CallNode{
+		Macro: macro,
 	})
-	assert.NilError(test, err)
+	assert.Assert(test, err == nil)
 
-	_, err = libvalidator.Validate(&libparser.Node{
-		Type:    libparser.NODE_MACRO,
-		Literal: "does_not_exist",
+	_, err = libvalidator.Validate(&libparser.CallNode{
+		Macro: "does_not_exist",
 	})
-	assert.ErrorContains(test, err, `undefined macro`)
+	assert.ErrorContains(test, err, `define`)
 }
 
 func TestValidatorArgs(test *testing.T) {
-	_, err := libvalidator.Validate(&libparser.Node{
-		Type:    libparser.NODE_DIRECTIVE,
-		Literal: libvalidator.DIR_UNSET,
-		Args: []any{
-			"Hello ${world}",
+	_, err := libvalidator.Validate(&libparser.DirectiveNode{
+		Name: libvalidator.DIR_UNSET,
+		NodeArgs: []libparser.Node{
+			&libparser.StringNode{Contents: "Hello ${world}"},
 		},
 	})
-	assert.NilError(test, err)
+	assert.Assert(test, err == nil)
 
-	_, err = libvalidator.Validate(&libparser.Node{
-		Type:    libparser.NODE_DIRECTIVE,
-		Literal: libvalidator.DIR_UNSET,
-		Args: []any{
-			"Hello ${world",
+	_, err = libvalidator.Validate(&libparser.DirectiveNode{
+		Name: libvalidator.DIR_UNSET,
+		NodeArgs: []libparser.Node{
+			&libparser.StringNode{Contents: "Hello ${world"},
 		},
 	})
 	assert.ErrorContains(test, err, "unexpected end of file")
