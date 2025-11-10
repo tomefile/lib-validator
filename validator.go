@@ -12,12 +12,12 @@ func Validate(node libparser.Node) (libparser.Node, *libparser.DetailedError) {
 	switch node := node.(type) {
 
 	case *libparser.StringNode:
-		// TODO: Store result into the node, so you don't have to compute it twice.
 		formatter := libparser.NewStringFormatter(bufio.NewReader(strings.NewReader(node.Contents)))
-		_, err := formatter.Format()
+		segments, err := formatter.Format()
 		if err != nil {
 			return node, err
 		}
+		node.Segments = segments
 
 	case *libparser.ExecNode:
 		path, is_found := FindExec(node.Binary)

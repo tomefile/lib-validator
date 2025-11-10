@@ -54,13 +54,27 @@ func TestValidatorMacro(test *testing.T) {
 }
 
 func TestValidatorArgs(test *testing.T) {
-	_, err := libvalidator.Validate(&libparser.DirectiveNode{
+	node := &libparser.DirectiveNode{
 		Name: libvalidator.DIR_UNSET,
 		NodeArgs: []libparser.Node{
-			&libparser.StringNode{Contents: "Hello ${world}"},
+			&libparser.StringNode{Contents: "Hello ${world?}"},
+		},
+	}
+	_, err := libvalidator.Validate(node)
+	assert.Assert(test, err == nil)
+	assert.DeepEqual(test, node.NodeArgs, libparser.NodeArgs{
+		&libparser.StringNode{
+			Contents: "Hello ${world?}",
+			Segments: []libparser.Segment{
+				&libparser.LiteralNode{Contents: "Hello "},
+				&libparser.VariableSegment{
+					Name:       "world",
+					Modifier:   nil,
+					IsOptional: true,
+				},
+			},
 		},
 	})
-	assert.Assert(test, err == nil)
 
 	_, err = libvalidator.Validate(&libparser.DirectiveNode{
 		Name: libvalidator.DIR_UNSET,

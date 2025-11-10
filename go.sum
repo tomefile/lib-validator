@@ -10,6 +10,8 @@ github.com/tomefile/lib-parser v0.1.2-beta h1:ZYpfoEi4UzYKOsauAdvrEa3JQkUp0ZgMXX
 github.com/tomefile/lib-parser v0.1.2-beta/go.mod h1:wiK10BlcJvgGDYvWc+66TnZkMI5OvlisPo+wHpXWyjU=
 github.com/tomefile/lib-parser v0.2.2-beta.1 h1:gg2UqN08DlUnbmHdf4l15fj8x/FqtkBmtZPRYo52Lic=
 github.com/tomefile/lib-parser v0.2.2-beta.1/go.mod h1:kOSelSCimbyxOtB1km4lkGbbeWZiCTsR8Cumu/kW5uM=
+github.com/tomefile/lib-parser v0.2.2-beta.2 h1:jnxB2MY5SExdWPm4gvN/cmdbQU3zWu0RSi+BmuHsWSM=
+github.com/tomefile/lib-parser v0.2.2-beta.2/go.mod h1:kOSelSCimbyxOtB1km4lkGbbeWZiCTsR8Cumu/kW5uM=
 golang.org/x/sys v0.0.0-20190124100055-b90733256f2e h1:3GIlrlVLfkoipSReOMNAgApI0ajnalyLa/EZHHca/XI=
 golang.org/x/sys v0.0.0-20190124100055-b90733256f2e/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
 gotest.tools v2.2.0+incompatible h1:VsBPFP1AI068pPrMxtb/S8Zkgf9xEmTLJjfM+P5UIEo=
