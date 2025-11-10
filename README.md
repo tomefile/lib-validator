@@ -26,7 +26,7 @@ if err != nil {
 
 ```go
 // This has the benefit of having fields expanded:
-// - libparser.ExecNode{}.Binary → changes to full path to library
+// - libparser.ExecNode{}.Binary → changes to full file path to binary
 // - libparser.StringNode{}.Segments → stores format segments
 
 parser := libparser.New(
