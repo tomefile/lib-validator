@@ -13,9 +13,9 @@ func Validate(node libparser.Node) (libparser.Node, *liberrors.DetailedError) {
 
 	case *libparser.StringNode:
 		formatter := libparser.NewStringFormatter(node.Contents)
-		segments, err := formatter.Format()
-		if err != nil {
-			return node, nil
+		segments, derr := formatter.Format()
+		if derr != nil {
+			return node, derr
 		}
 		node.Segments = segments
 
