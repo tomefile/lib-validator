@@ -37,20 +37,6 @@ func Validate(node libparser.Node) (libparser.Node, *liberrors.DetailedError) {
 			return node, err
 		}
 
-	case *libparser.CallNode:
-		_, is_found := ValidMacros[node.Macro]
-		if !is_found {
-			return node, &liberrors.DetailedError{
-				Name:    liberrors.ERROR_VALIDATION,
-				Details: fmt.Sprintf("macro %q is not defined", node.Macro),
-				Trace:   []liberrors.TraceItem{},
-				Context: liberrors.Context{},
-			}
-		}
-		if err := ValidateChildren(libparser.NodeChildren(node.NodeArgs)); err != nil {
-			return node, err
-		}
-
 	case *libparser.DirectiveNode:
 		required_args, is_found := ValidDirectives[node.Name]
 		if !is_found {

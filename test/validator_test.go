@@ -69,22 +69,6 @@ func TestValidatorDirective(test *testing.T) {
 	assert.ErrorContains(test, err, `define`)
 }
 
-func TestValidatorMacro(test *testing.T) {
-	macro := "example_macro"
-	libvalidator.ValidMacros[macro] = nil
-
-	_, err := libvalidator.Validate(&libparser.CallNode{
-		Macro: macro,
-	})
-	assert.Assert(test, err == nil)
-
-	_, err = libvalidator.Validate(&libparser.CallNode{
-		Macro: "does_not_exist",
-	})
-	assert.Assert(test, err != nil)
-	assert.ErrorContains(test, err, `define`)
-}
-
 func TestValidatorArgs(test *testing.T) {
 	node := &libparser.DirectiveNode{
 		Name: libvalidator.DIR_UNSET,
