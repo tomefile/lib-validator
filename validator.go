@@ -79,7 +79,10 @@ func Validate(node libparser.Node) (libparser.Node, *liberrors.DetailedError) {
 
 		args := map[string]*ValidStringNode{}
 		for i, arg := range required_args {
-			if !isOptionalArg(arg) && i >= len(node.NodeArgs) {
+			if i >= len(node.NodeArgs) {
+				if isOptionalArg(arg) {
+					break
+				}
 				return node, &liberrors.DetailedError{
 					Name:    liberrors.ERROR_VALIDATION,
 					Details: fmt.Sprintf("expected an argument %q.", arg),
