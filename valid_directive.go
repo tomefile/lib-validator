@@ -5,6 +5,7 @@ type DirArgs []string
 const (
 	DIR_INCLUDE     = "include"
 	DIR_SECTION     = "section"
+	DIR_DEFINE      = "define"
 	DIR_TOME        = "tome"
 	DIR_REQUIRE     = "require"
 	DIR_DEPEND_CALL = "dcall"
@@ -21,6 +22,7 @@ const (
 var ValidDirectives = map[string]DirArgs{
 	DIR_INCLUDE:     []string{"path"},
 	DIR_SECTION:     []string{"description?"},
+	DIR_DEFINE:      []string{"macro_name"},
 	DIR_TOME:        []string{"tome_name", "description?"},
 	DIR_REQUIRE:     []string{"variable_name", "default_value?"},
 	DIR_DEPEND_CALL: []string{"tome_name", "...paths?"},
