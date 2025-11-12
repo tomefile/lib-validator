@@ -5,28 +5,29 @@ import (
 	"fmt"
 	"strings"
 
+	liberrors "github.com/tomefile/lib-errors"
 	libparser "github.com/tomefile/lib-parser"
 )
 
-func Validate(node libparser.Node) (libparser.Node, *libparser.DetailedError) {
+func Validate(node libparser.Node) (libparser.Node, *liberrors.DetailedError) {
 	switch node := node.(type) {
 
 	case *libparser.StringNode:
 		formatter := libparser.NewStringFormatter(bufio.NewReader(strings.NewReader(node.Contents)))
 		segments, err := formatter.Format()
 		if err != nil {
-			return node, err
+			return node, nil
 		}
 		node.Segments = segments
 
 	case *libparser.ExecNode:
 		path, is_found := FindExec(node.Binary)
 		if !is_found {
-			return node, &libparser.DetailedError{
-				Name:    "Validation Error",
+			return node, &liberrors.DetailedError{
+				Name:    liberrors.ERROR_VALIDATION,
 				Details: fmt.Sprintf("could not find %q in $PATH", node.Binary),
-				Trace:   []libparser.TraceItem{},
-				Context: fmt.Sprintf("$ %s", node.Binary),
+				Trace:   []liberrors.TraceItem{},
+				Context: liberrors.Context{},
 			}
 		}
 		node.Binary = path
@@ -37,11 +38,11 @@ func Validate(node libparser.Node) (libparser.Node, *libparser.DetailedError) {
 	case *libparser.CallNode:
 		_, is_found := ValidMacros[node.Macro]
 		if !is_found {
-			return node, &libparser.DetailedError{
-				Name:    "Validation Error",
+			return node, &liberrors.DetailedError{
+				Name:    liberrors.ERROR_VALIDATION,
 				Details: fmt.Sprintf("macro %q is not defined", node.Macro),
-				Trace:   []libparser.TraceItem{},
-				Context: fmt.Sprintf("$ %s!", node.Macro),
+				Trace:   []liberrors.TraceItem{},
+				Context: liberrors.Context{},
 			}
 		}
 		if err := ValidateChildren(libparser.NodeChildren(node.NodeArgs)); err != nil {
@@ -51,20 +52,20 @@ func Validate(node libparser.Node) (libparser.Node, *libparser.DetailedError) {
 	case *libparser.DirectiveNode:
 		required_args, is_found := ValidDirectives[node.Name]
 		if !is_found {
-			return node, &libparser.DetailedError{
-				Name:    "Validation Error",
+			return node, &liberrors.DetailedError{
+				Name:    liberrors.ERROR_VALIDATION,
 				Details: fmt.Sprintf("directive %q is not defined", node.Name),
-				Trace:   []libparser.TraceItem{},
-				Context: fmt.Sprintf(":%s", node.Name),
+				Trace:   []liberrors.TraceItem{},
+				Context: liberrors.Context{},
 			}
 		}
 		if len(required_args) == 0 {
 			if len(node.NodeArgs) != 0 {
-				return node, &libparser.DetailedError{
-					Name:    "Validation Error",
+				return node, &liberrors.DetailedError{
+					Name:    liberrors.ERROR_VALIDATION,
 					Details: fmt.Sprintf("expected no arguments but got %q.", node.NodeArgs[0]),
-					Trace:   []libparser.TraceItem{},
-					Context: fmt.Sprintf(":%s", node.Name),
+					Trace:   []liberrors.TraceItem{},
+					Context: liberrors.Context{},
 				}
 			}
 			break
@@ -74,11 +75,11 @@ func Validate(node libparser.Node) (libparser.Node, *libparser.DetailedError) {
 				break
 			}
 			if i >= len(node.NodeArgs) {
-				return node, &libparser.DetailedError{
-					Name:    "Validation Error",
+				return node, &liberrors.DetailedError{
+					Name:    liberrors.ERROR_VALIDATION,
 					Details: fmt.Sprintf("expected an argument %q.", arg),
-					Trace:   []libparser.TraceItem{},
-					Context: fmt.Sprintf(":%s", node.Name),
+					Trace:   []liberrors.TraceItem{},
+					Context: liberrors.Context{},
 				}
 			}
 		}
@@ -94,7 +95,7 @@ func Validate(node libparser.Node) (libparser.Node, *libparser.DetailedError) {
 	return node, nil
 }
 
-func ValidateChildren(children libparser.NodeChildren) *libparser.DetailedError {
+func ValidateChildren(children libparser.NodeChildren) *liberrors.DetailedError {
 	for _, arg := range children {
 		_, ctx_err := Validate(arg)
 		if ctx_err != nil {

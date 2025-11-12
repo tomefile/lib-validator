@@ -6,10 +6,8 @@ github.com/iancoleman/strcase v0.3.0 h1:nTXanmYxhfFAMjZL34Ov6gkzEsSJZ5DbhxWjvSAS
 github.com/iancoleman/strcase v0.3.0/go.mod h1:iwCmte+B7n89clKwxIoIXy/HfoL7AsD47ZCWhYzw7ho=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
-github.com/tomefile/lib-parser v0.1.2-beta h1:ZYpfoEi4UzYKOsauAdvrEa3JQkUp0ZgMXXfWCU1SHJo=
-github.com/tomefile/lib-parser v0.1.2-beta/go.mod h1:wiK10BlcJvgGDYvWc+66TnZkMI5OvlisPo+wHpXWyjU=
-github.com/tomefile/lib-parser v0.2.2-beta.1 h1:gg2UqN08DlUnbmHdf4l15fj8x/FqtkBmtZPRYo52Lic=
-github.com/tomefile/lib-parser v0.2.2-beta.1/go.mod h1:kOSelSCimbyxOtB1km4lkGbbeWZiCTsR8Cumu/kW5uM=
+github.com/tomefile/lib-errors v1.0.1 h1:Ao/vWVOi4RldoqAtkAefHWzTLoc9XrKx/x1/t0yUZLg=
+github.com/tomefile/lib-errors v1.0.1/go.mod h1:/Tj8j0tsEgAbR9dDf/rnZT324K1gzFZjGV+atq8sRxU=
 github.com/tomefile/lib-parser v0.2.2-beta.2 h1:jnxB2MY5SExdWPm4gvN/cmdbQU3zWu0RSi+BmuHsWSM=
 github.com/tomefile/lib-parser v0.2.2-beta.2/go.mod h1:kOSelSCimbyxOtB1km4lkGbbeWZiCTsR8Cumu/kW5uM=
 golang.org/x/sys v0.0.0-20190124100055-b90733256f2e h1:3GIlrlVLfkoipSReOMNAgApI0ajnalyLa/EZHHca/XI=

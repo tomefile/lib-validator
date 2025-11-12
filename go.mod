@@ -1,8 +1,9 @@
 module github.com/tomefile/lib-validator
 
-go 1.25.3
+go 1.25.4
 
 require (
+	github.com/tomefile/lib-errors v1.0.1
 	github.com/tomefile/lib-parser v0.2.2-beta.2
 	gotest.tools v2.2.0+incompatible
 )
