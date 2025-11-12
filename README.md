@@ -15,9 +15,9 @@ Library to validate Tomefile Parser output
 ### Using it directly
 
 ```go
-node, err := libvalidator.Validate(...)
-if err != nil {
-    err.BeautyPrint(os.Stderr)
+node, derr := libvalidator.Validate(...)
+if derr != nil {
+    derr.Print(os.Stderr)
     os.Exit(1)
 }
 ```
@@ -29,14 +29,11 @@ if err != nil {
 // - libparser.ExecNode{}.Binary -> changes to full file path to binary
 // - libparser.StringNode{}.Segments -> stores format segments
 
-parser := libparser.New(
-    "example.tome",
-    bufio.NewReader(file),
-    libparser.Validate,
-)
-tree, err := parser.Parse()
-if err != nil {
-    err.BeautyPrint(os.Stderr)
+parser := libparser.New(file).With(libparser.Validate)
+
+tree, derr := parser.Parse()
+if derr != nil {
+    derr.Print(os.Stderr)
     os.Exit(1)
 }
 ```
