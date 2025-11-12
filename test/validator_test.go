@@ -67,8 +67,8 @@ func TestValidatorArgs(test *testing.T) {
 	_, err := libvalidator.Validate(node)
 	assert.Assert(test, err == nil)
 	assert.DeepEqual(test, node.NodeArgs, libparser.NodeArgs{
-		&libparser.StringNode{
-			Contents: "Hello ${world?}",
+		&libvalidator.ValidStringNode{
+			Original: "Hello ${world?}",
 			Segments: []libparser.Segment{
 				&libparser.LiteralNode{Contents: "Hello "},
 				&libparser.VariableSegment{

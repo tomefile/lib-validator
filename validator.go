@@ -17,7 +17,10 @@ func Validate(node libparser.Node) (libparser.Node, *liberrors.DetailedError) {
 		if derr != nil {
 			return node, derr
 		}
-		node.Segments = segments
+		return &ValidStringNode{
+			Original: node.Contents,
+			Segments: segments,
+		}, nil
 
 	case *libparser.ExecNode:
 		path, is_found := FindExec(node.Binary)
@@ -95,11 +98,12 @@ func Validate(node libparser.Node) (libparser.Node, *liberrors.DetailedError) {
 }
 
 func ValidateChildren(children libparser.NodeChildren) *liberrors.DetailedError {
-	for _, arg := range children {
-		_, ctx_err := Validate(arg)
+	for i, arg := range children {
+		node, ctx_err := Validate(arg)
 		if ctx_err != nil {
 			return ctx_err
 		}
+		children[i] = node
 	}
 
 	return nil
