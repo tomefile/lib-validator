@@ -7,6 +7,11 @@ import (
 )
 
 func FindExec(name string) (string, bool) {
+	if filepath.IsAbs(name) {
+		_, err := os.Stat(name)
+		return name, err == nil
+	}
+
 	for dir := range strings.SplitSeq(os.Getenv("PATH"), ":") {
 		file_path := filepath.Join(dir, name)
 

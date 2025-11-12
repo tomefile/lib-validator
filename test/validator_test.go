@@ -14,6 +14,11 @@ func TestValidatorExec(test *testing.T) {
 	})
 	assert.Assert(test, err != nil)
 	assert.ErrorContains(test, err, `$PATH`)
+
+	_, err = libvalidator.Validate(&libparser.ExecNode{
+		Binary: "/bin/go",
+	})
+	assert.Assert(test, err == nil)
 }
 
 func TestValidatorDirective(test *testing.T) {
