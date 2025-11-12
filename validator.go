@@ -1,7 +1,6 @@
 package libvalidator
 
 import (
-	"bufio"
 	"fmt"
 	"strings"
 
@@ -13,7 +12,7 @@ func Validate(node libparser.Node) (libparser.Node, *liberrors.DetailedError) {
 	switch node := node.(type) {
 
 	case *libparser.StringNode:
-		formatter := libparser.NewStringFormatter(bufio.NewReader(strings.NewReader(node.Contents)))
+		formatter := libparser.NewStringFormatter(node.Contents)
 		segments, err := formatter.Format()
 		if err != nil {
 			return node, nil
