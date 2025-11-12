@@ -72,11 +72,14 @@ func Validate(node libparser.Node) (libparser.Node, *liberrors.DetailedError) {
 			}
 			break
 		}
+
+		if err := ValidateChildren(libparser.NodeChildren(node.NodeArgs)); err != nil {
+			return node, err
+		}
+
+		args := map[string]*ValidStringNode{}
 		for i, arg := range required_args {
-			if isOptionalArg(arg) {
-				break
-			}
-			if i >= len(node.NodeArgs) {
+			if !isOptionalArg(arg) && i >= len(node.NodeArgs) {
 				return node, &liberrors.DetailedError{
 					Name:    liberrors.ERROR_VALIDATION,
 					Details: fmt.Sprintf("expected an argument %q.", arg),
@@ -84,13 +87,40 @@ func Validate(node libparser.Node) (libparser.Node, *liberrors.DetailedError) {
 					Context: liberrors.Context{},
 				}
 			}
+
+			switch arg_node := node.NodeArgs[i].(type) {
+
+			case *ValidStringNode:
+				args[arg] = arg_node
+
+			case *libparser.LiteralNode:
+				args[arg] = &ValidStringNode{
+					Original: arg_node.Contents,
+					Segments: []libparser.Segment{
+						arg_node,
+					},
+				}
+
+			default:
+				return arg_node, &liberrors.DetailedError{
+					Name:    liberrors.ERROR_VALIDATION,
+					Details: fmt.Sprintf("unexpected argument %s of section %q", arg_node.Node(), node.Name),
+					Trace:   []liberrors.TraceItem{},
+					Context: liberrors.Context{},
+				}
+			}
 		}
-		if err := ValidateChildren(libparser.NodeChildren(node.NodeArgs)); err != nil {
-			return node, err
-		}
+
 		if err := ValidateChildren(node.NodeChildren); err != nil {
 			return node, err
 		}
+
+		return &ValidDirectiveNode{
+			Name:         node.Name,
+			NodeArgs:     node.NodeArgs,
+			NodeChildren: node.NodeChildren,
+			Arguments:    args,
+		}, nil
 
 	}
 

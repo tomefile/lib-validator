@@ -17,7 +17,7 @@ func TestValidatorExec(test *testing.T) {
 }
 
 func TestValidatorDirective(test *testing.T) {
-	_, err := libvalidator.Validate(&libparser.DirectiveNode{
+	node, err := libvalidator.Validate(&libparser.DirectiveNode{
 		Name: libvalidator.DIR_EXPORT,
 		NodeArgs: []libparser.Node{
 			&libparser.StringNode{Contents: "hello_world"},
@@ -25,6 +25,29 @@ func TestValidatorDirective(test *testing.T) {
 		},
 	})
 	assert.Assert(test, err == nil)
+	assert.DeepEqual(test, node, &libvalidator.ValidDirectiveNode{
+		Name: libvalidator.DIR_EXPORT,
+		NodeArgs: []libparser.Node{
+			&libvalidator.ValidStringNode{
+				Original: "hello_world",
+				Segments: []libparser.Segment{&libparser.LiteralNode{Contents: "hello_world"}},
+			},
+			&libvalidator.ValidStringNode{
+				Original: "123",
+				Segments: []libparser.Segment{&libparser.LiteralNode{Contents: "123"}},
+			},
+		},
+		Arguments: map[string]*libvalidator.ValidStringNode{
+			"env_name": {
+				Original: "hello_world",
+				Segments: []libparser.Segment{&libparser.LiteralNode{Contents: "hello_world"}},
+			},
+			"value": {
+				Original: "123",
+				Segments: []libparser.Segment{&libparser.LiteralNode{Contents: "123"}},
+			},
+		},
+	})
 
 	_, err = libvalidator.Validate(&libparser.DirectiveNode{
 		Name:     libvalidator.DIR_EXPORT,
