@@ -18,5 +18,5 @@ type ValidDirectiveNode struct {
 }
 
 func (node *ValidDirectiveNode) Node() string {
-	return fmt.Sprintf("[directive %q]", node.Name)
+	return fmt.Sprintf(":%s%s%s", node.Name, node.NodeArgs, node.NodeChildren)
 }

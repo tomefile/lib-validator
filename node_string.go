@@ -1,8 +1,6 @@
 package libvalidator
 
 import (
-	"fmt"
-
 	libparser "github.com/tomefile/lib-parser"
 )
 
@@ -15,5 +13,5 @@ type ValidStringNode struct {
 }
 
 func (node *ValidStringNode) Node() string {
-	return fmt.Sprintf("[valid_string %q]", node.Original)
+	return node.Original
 }
