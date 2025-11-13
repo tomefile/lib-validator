@@ -19,19 +19,41 @@ const (
 	DIR_EXPORT      = "export"
 )
 
+const (
+	ARG_GENERIC       = "arg"
+	ARG_PATH          = "path"
+	ARG_DESCRIPTION   = "description"
+	ARG_MACRO_NAME    = "macro_name"
+	ARG_TOME_NAME     = "tome_name"
+	ARG_VARIABLE_NAME = "variable_name"
+	ARG_ENV_NAME      = "env_name"
+	ARG_DEFAULT_VALUE = "default_value"
+	ARG_VALUE         = "value"
+	ARG_SIGN          = "sign"
+	ARG_COMMAND       = "command"
+)
+
+func ArgVariadic(arg string) string {
+	return ArgOptional("..." + arg)
+}
+
+func ArgOptional(arg string) string {
+	return arg + "?"
+}
+
 var ValidDirectives = map[string]DirArgs{
-	DIR_INCLUDE:     []string{"path"},
-	DIR_SECTION:     []string{"description?"},
-	DIR_DEFINE:      []string{"macro_name"},
-	DIR_TOME:        []string{"tome_name", "description?"},
-	DIR_REQUIRE:     []string{"variable_name", "default_value?"},
-	DIR_DEPEND_CALL: []string{"tome_name", "...paths?"},
-	DIR_CALL:        []string{"tome_name"},
-	DIR_SET:         []string{"variable_name", "value"},
-	DIR_UNSET:       []string{"variable_name"},
-	DIR_IF:          []string{"variable_name", "sign?", "value?"},
-	DIR_ELIF:        []string{"variable_name", "sign?", "value?"},
+	DIR_INCLUDE:     []string{ARG_PATH},
+	DIR_SECTION:     []string{ArgOptional(ARG_DESCRIPTION)},
+	DIR_DEFINE:      []string{ARG_MACRO_NAME},
+	DIR_TOME:        []string{ARG_TOME_NAME, ArgOptional(ARG_DESCRIPTION)},
+	DIR_REQUIRE:     []string{ARG_VARIABLE_NAME, ArgOptional(ARG_DEFAULT_VALUE)},
+	DIR_DEPEND_CALL: []string{ARG_TOME_NAME, ArgVariadic(ARG_PATH)},
+	DIR_CALL:        []string{ARG_TOME_NAME},
+	DIR_SET:         []string{ARG_VARIABLE_NAME, ARG_VALUE},
+	DIR_UNSET:       []string{ARG_VARIABLE_NAME},
+	DIR_IF:          []string{ARG_VARIABLE_NAME, ArgOptional(ARG_SIGN), ArgOptional(ARG_VALUE)},
+	DIR_ELIF:        []string{ARG_VARIABLE_NAME, ArgOptional(ARG_SIGN), ArgOptional(ARG_VALUE)},
 	DIR_ELSE:        []string{},
-	DIR_TRY:         []string{"command", "...args?"},
-	DIR_EXPORT:      []string{"env_name", "value"},
+	DIR_TRY:         []string{ARG_COMMAND, ArgVariadic(ARG_GENERIC)},
+	DIR_EXPORT:      []string{ARG_ENV_NAME, ARG_VALUE},
 }
